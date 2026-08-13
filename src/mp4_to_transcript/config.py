@@ -8,7 +8,12 @@ from pathlib import Path
 
 
 def _as_bool(value: str) -> bool:
-    return value.strip().lower() in {"1", "true", "yes", "on"}
+    normalized = value.strip().lower()
+    if normalized in {"1", "true", "yes", "on"}:
+        return True
+    if normalized in {"0", "false", "no", "off"}:
+        return False
+    raise ValueError("WHISPER_LOCAL_FILES_ONLY must be a boolean value")
 
 
 @dataclass(frozen=True)
@@ -21,12 +26,21 @@ class Settings:
     cpu_threads: int
     local_files_only: bool
 
+    def __post_init__(self) -> None:
+        if not self.model_name.strip():
+            raise ValueError("WHISPER_MODEL cannot be blank")
+        if not self.compute_type.strip():
+            raise ValueError("WHISPER_COMPUTE_TYPE cannot be blank")
+        if self.cpu_threads < 1:
+            raise ValueError("TRANSCRIBE_CPU_THREADS must be at least 1")
+
     @classmethod
     def from_environment(cls) -> "Settings":
         language = os.getenv("WHISPER_LANGUAGE", "").strip() or None
-        cpu_threads = int(os.getenv("TRANSCRIBE_CPU_THREADS", "4"))
-        if cpu_threads < 1:
-            raise ValueError("TRANSCRIBE_CPU_THREADS must be at least 1")
+        try:
+            cpu_threads = int(os.getenv("TRANSCRIBE_CPU_THREADS", "4"))
+        except ValueError as error:
+            raise ValueError("TRANSCRIBE_CPU_THREADS must be an integer") from error
         return cls(
             output_dir=Path(os.getenv("TRANSCRIPT_OUTPUT_DIR", "./outputs")),
             model_cache=Path(os.getenv("WHISPER_MODEL_CACHE", "./model-cache")),

@@ -2,7 +2,7 @@
 
 Verified 2026-08-13 on the build workstation.
 
-- `pytest`: **7 passed** — validation, timestamp conversion, Markdown/VTT/SRT/JSON output, and failed job persistence.
+- `pytest`: **12 passed** — validation, configuration, segment contracts, timestamp conversion, Markdown/VTT/SRT/JSON output, and failed-job persistence.
 - End-to-end local inference: **passed** using faster-whisper `base`, CPU `int8`, four threads, automatic language detection, and a 13.08-second public JFK speech sample packaged as a local MP4. It produced 2 segments and all four required outputs with `REVIEW_REQUIRED` status.
 - Input SHA-256: `f2d12c18987341fca9e6f00a957aeb5deb357a43291a864bf7e3fe82c733c9d6`.
 - Markdown transcript SHA-256: `ce2e6f4fe58f2479b3844ed76a2419fe296d3f80a4b10bc6fcb2a7d87b3de1dc`.

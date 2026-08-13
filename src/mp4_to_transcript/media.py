@@ -21,8 +21,15 @@ def validate_mp4(path: Path) -> MediaInfo:
     try:
         result = subprocess.run(
             [
-                "ffprobe", "-v", "error", "-show_entries",
-                "format=format_name,duration", "-show_streams", "-of", "json", str(path),
+                "ffprobe",
+                "-v",
+                "error",
+                "-show_entries",
+                "format=format_name,duration",
+                "-show_streams",
+                "-of",
+                "json",
+                str(path),
             ],
             check=True,
             capture_output=True,
@@ -55,8 +62,23 @@ def extract_mono_wav(input_path: Path, output_path: Path) -> None:
     try:
         subprocess.run(
             [
-                "ffmpeg", "-nostdin", "-y", "-i", str(input_path), "-vn", "-ac", "1",
-                "-ar", "16000", "-c:a", "pcm_s16le", str(output_path),
+                "ffmpeg",
+                "-nostdin",
+                "-loglevel",
+                "error",
+                "-y",
+                "-i",
+                str(input_path),
+                "-map",
+                "0:a:0",
+                "-vn",
+                "-ac",
+                "1",
+                "-ar",
+                "16000",
+                "-c:a",
+                "pcm_s16le",
+                str(output_path),
             ],
             check=True,
             capture_output=True,

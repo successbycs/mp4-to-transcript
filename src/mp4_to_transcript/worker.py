@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import tempfile
 import uuid
 from datetime import datetime, timezone
@@ -13,7 +12,7 @@ from typing import Callable, Iterable
 from .config import Settings
 from .media import extract_mono_wav, validate_mp4
 from .models import JobMetadata, Segment
-from .outputs import sha256_file, write_outputs
+from .outputs import sha256_file, write_json_atomically, write_outputs
 
 Transcriber = Callable[[Path, Settings], Iterable[Segment]]
 
@@ -101,25 +100,22 @@ class TranscriptionService:
                 transcribed_at=utc_now(),
                 segments=segments,
             )
-            metadata.completed_at = utc_now()
-            metadata.status = "REVIEW_REQUIRED"
-            metadata.segment_count = len(segments)
-            metadata.transcript_sha256 = sha256_file(paths["markdown"])
-            metadata.output_paths = {key: str(path) for key, path in paths.items()}
+            metadata.complete(
+                completed_at=utc_now(),
+                segment_count=len(segments),
+                transcript_sha256=sha256_file(paths["markdown"]),
+                output_paths={key: str(path) for key, path in paths.items()},
+            )
             self._write_metadata(job_dir, metadata)
             return metadata
         except Exception as error:
-            metadata.completed_at = utc_now()
-            metadata.status = "FAILED"
-            metadata.error_summary = _safe_error(error)
+            metadata.fail(_safe_error(error), utc_now())
             self._write_metadata(job_dir, metadata)
             return metadata
 
     @staticmethod
     def _write_metadata(job_dir: Path, metadata: JobMetadata) -> None:
-        (job_dir / "job.json").write_text(
-            json.dumps(metadata.as_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8"
-        )
+        write_json_atomically(job_dir / "job.json", metadata.as_dict(), sort_keys=True)
 
 
 def _safe_error(error: Exception) -> str:
