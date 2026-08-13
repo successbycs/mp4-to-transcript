@@ -74,7 +74,7 @@ python3 scripts/t480_adapter.py submit-transcription-folder \
 
 It uses the adapter's existing SSH host-key and key-authentication configuration. Each file is copied to the fixed private T480 inbox, run through this repository's one-shot Compose worker, and removed from the T480 inbox only after a successful job. Original videos stay in the Windows source folder; transcript outputs remain on the T480 under `outputs/<job_id>/`. It never starts a permanent worker and does not upload media to a cloud service.
 
-The command refuses subfolders and filenames outside a conservative portable character set (`A–Z`, `a–z`, `0–9`, spaces, `.`, `_`, `-`). Rename unusual filenames first. Run its preflight before the first batch:
+The command refuses subfolders and filenames outside a conservative portable character set (`A–Z`, `a–z`, `0–9`, spaces, `.`, `_`, `-`, `(`, `)`). Rename unusual filenames first. Run its preflight before the first batch:
 
 ```bash
 python3 scripts/t480_adapter.py execute --operation transcription_deploy --approve

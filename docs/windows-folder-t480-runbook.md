@@ -31,7 +31,7 @@ python3 scripts/t480_adapter.py execute --operation transcription_preflight
 ## Submit a folder
 
 1. Put only the intended direct MP4 files in a Windows folder. Subfolders are not scanned.
-2. Use portable names consisting of letters, numbers, spaces, dots, underscores, and hyphens. Rename unusual names before submission.
+2. Use portable names consisting of letters, numbers, spaces, dots, underscores, hyphens, and parentheses. Rename unusual names before submission.
 3. Request the batch explicitly, or run:
 
    ```bash
