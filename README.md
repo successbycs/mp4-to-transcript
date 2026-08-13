@@ -78,6 +78,7 @@ The command refuses subfolders and filenames outside a conservative portable cha
 
 ```bash
 python3 scripts/t480_adapter.py execute --operation transcription_deploy --approve
+python3 scripts/t480_adapter.py execute --operation transcription_model_prefetch --approve
 python3 scripts/t480_adapter.py execute --operation transcription_preflight
 ```
 
