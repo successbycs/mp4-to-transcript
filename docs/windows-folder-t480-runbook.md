@@ -8,13 +8,16 @@ Use this runbook when a human operator has a folder in Windows Explorer containi
 Windows source folder (unchanged)
         │  one MP4 at a time, SSH key + host verification
         ▼
+T480 Windows staging (one temporary file)
+        │  fixed governed WSL move
+        ▼
 T480 transient inbox: incoming/<filename>.mp4
         │  one-shot, CPU-only Docker worker
         ▼
 T480 outputs/<job_id>/{transcript.md,.vtt,.srt,segments.json,job.json}
 ```
 
-The original video stays in the Windows folder. A T480 inbox copy is removed only after a successful job. The worker exits after each video; no container, web server, or folder watcher remains running.
+The original video stays in the Windows folder. Windows OpenSSH first receives one temporary copy in a fixed private T480 staging directory, then the governed T480 operation moves it to the WSL inbox. A T480 inbox copy is removed only after a successful job. The worker exits after each video; no container, web server, or folder watcher remains running.
 
 ## First-time readiness
 
