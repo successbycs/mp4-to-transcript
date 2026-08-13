@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mp4-to-transcript"
+version = "0.1.0"
+description = "Private, local MP4-to-transcript preparation tool"
+requires-python = ">=3.11"
+dependencies = [
+  "faster-whisper>=1.1.0,<2",
+  "typer>=0.12,<1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9"]
+
+[project.scripts]
+mp4-to-transcript = "mp4_to_transcript.cli:app"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.setuptools.packages.find]
+where = ["src"]

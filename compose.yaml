@@ -1,0 +1,31 @@
+name: mp4-to-transcript
+
+# This is a one-shot worker, deliberately separate from cs-ai-lab-infra. It
+# creates no PostgreSQL, n8n, Ollama, network service, or exposed port.
+services:
+  transcriber:
+    build:
+      context: .
+    profiles: ["transcribe"]
+    restart: "no"
+    init: true
+    environment:
+      TRANSCRIPT_OUTPUT_DIR: /data/outputs
+      WHISPER_MODEL_CACHE: /data/model-cache
+      WHISPER_MODEL: ${WHISPER_MODEL:-base}
+      WHISPER_COMPUTE_TYPE: ${WHISPER_COMPUTE_TYPE:-int8}
+      WHISPER_LANGUAGE: ${WHISPER_LANGUAGE:-}
+      TRANSCRIBE_CPU_THREADS: ${TRANSCRIBE_CPU_THREADS:-4}
+      WHISPER_LOCAL_FILES_ONLY: ${WHISPER_LOCAL_FILES_ONLY:-true}
+    volumes:
+      - ${TRANSCRIPT_INPUT_DIR:-./inputs}:/input:ro
+      - ${TRANSCRIPT_OUTPUT_DIR:-./outputs}:/data/outputs
+      - whisper_model_cache:/data/model-cache
+    cpus: 4
+    mem_limit: 5g
+    read_only: true
+    tmpfs:
+      - /tmp:size=1g,mode=1777
+
+volumes:
+  whisper_model_cache:
