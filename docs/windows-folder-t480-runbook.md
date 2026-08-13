@@ -49,7 +49,14 @@ The adapter sorts direct `.mp4` files by filename. For every file it uploads, wa
 
 Each success is stored on the T480 at `outputs/<job_id>/`. Review `transcript.md` against the original video. The transcript remains `REVIEW_REQUIRED` until a human corrects and approves it. Do not ingest raw output into Solution 2 or any knowledge base.
 
-The initial MVP keeps outputs on the T480. A separate governed retrieval/export operation is required before copying review files back to the laptop; do not use an ad-hoc remote shell command for this.
+Pull completed review artefacts back to this laptop with the governed fixed-destination command:
+
+```bash
+cd /home/chris/projects/cs-ai-lab-infra
+python3 scripts/t480_adapter.py pull-transcription-outputs --approve
+```
+
+It copies only completed `REVIEW_REQUIRED` job folders to `C:\Users\chris\Videos\Transcripts`. An active or failed job is not exported. Do not use an ad-hoc remote shell command for retrieval.
 
 ## Failure recovery
 
