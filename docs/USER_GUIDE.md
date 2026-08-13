@@ -1,5 +1,7 @@
 # User guide: MP4 transcription service
 
+For the shortest operational checklist, see [user instructions](USER_INSTRUCTIONS.md).
+
 ## What this service does
 
 Give the service a Windows folder containing MP4 videos. It sends them to the private T480 one at a time and creates a set of timestamped transcript files for each video.
