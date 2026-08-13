@@ -62,6 +62,8 @@ It copies only completed `REVIEW_REQUIRED` job folders to `C:\Users\chris\Videos
 
 If an upload fails, no remote job starts and the Windows source remains intact. If transcription fails, the adapter stops the batch immediately and leaves that one T480 inbox copy in place. Inspect its associated `job.json` (when present), resolve the issue, then intentionally rerun or remove that exact inbox file through a governed recovery action. If the remote session simply ends after successful jobs, rerun the same folder submission: it skips completed SHA-256 values and continues with the remaining videos.
 
+If one already-uploaded MP4 is retained in the inbox after a session interruption, the governed `transcription_process_existing_inbox` operation can process that exact one file before the normal folder submission is resumed. It refuses to run if zero or more than one retained MP4 is present.
+
 ## Safety boundaries
 
 - Source media is never sent to a cloud transcription service.
