@@ -43,7 +43,7 @@ python3 scripts/t480_adapter.py execute --operation transcription_preflight
      --source-folder 'C:\Users\chris\Videos\To Transcribe' --approve
    ```
 
-The adapter sorts direct `.mp4` files by filename. For every file it uploads, waits for the job, confirms its success, and only then submits the next. It refuses to start when an earlier failed file is still in the T480 inbox.
+The adapter sorts direct `.mp4` files by filename. For every file it uploads, waits for the job, confirms its success, and only then submits the next. It skips files whose SHA-256 already has a successful T480 job, so an interrupted remote session can be safely resumed by running the same command again. It removes a temporary inbox copy only after its SHA-256 exactly matches a completed job.
 
 ## Review and handoff
 
@@ -53,7 +53,7 @@ The initial MVP keeps outputs on the T480. A separate governed retrieval/export 
 
 ## Failure recovery
 
-If an upload fails, no remote job starts and the Windows source remains intact. If transcription fails, the adapter stops the batch immediately and leaves that one T480 inbox copy in place. Inspect its associated `job.json` (when present), resolve the issue, then intentionally rerun or remove that exact inbox file through a future governed recovery action. Do not submit a second folder until the inbox is empty.
+If an upload fails, no remote job starts and the Windows source remains intact. If transcription fails, the adapter stops the batch immediately and leaves that one T480 inbox copy in place. Inspect its associated `job.json` (when present), resolve the issue, then intentionally rerun or remove that exact inbox file through a governed recovery action. If the remote session simply ends after successful jobs, rerun the same folder submission: it skips completed SHA-256 values and continues with the remaining videos.
 
 ## Safety boundaries
 
