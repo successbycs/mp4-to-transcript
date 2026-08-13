@@ -21,6 +21,8 @@ The human operator selects a folder in Windows Explorer and supplies its path to
 
 The source MP4 is never moved or deleted. The remote inbox (`incoming/`) is a transient copy: it is deleted after a successful job and retained after a failure for diagnosis or an intentional retry. The corresponding review artefacts persist at `outputs/<job_id>/` on the T480.
 
+Follow [the dedicated Windows-folder T480 runbook](windows-folder-t480-runbook.md) for deployment, offline model prefetch, exact commands, failure recovery, and the current output-retrieval boundary.
+
 ## Cleanup
 
 Outputs and model cache are intentionally persistent. Delete a specific completed job directory only after its review material is no longer needed; never run broad recursive deletion commands against the repository or an unresolved path. Container cleanup is safe with `docker compose --profile transcribe down`; it preserves the model-cache volume. Do not use `-v` unless deleting cached models is intentional.
