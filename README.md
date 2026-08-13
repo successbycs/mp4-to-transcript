@@ -62,6 +62,25 @@ docker compose --profile transcribe run --rm \
 
 `health` itself does not load a model; use the first real job to fetch a model if this temporary setting is used. Set the variable back to `true` immediately afterward. Alternatively, pre-populate the cache from a trusted offline source.
 
+### Submit a Windows Explorer folder to the T480
+
+For repeat use, do not copy files by hand. The governed T480 adapter provides a serial folder submission command. Give it the Windows folder that contains the MP4s; it processes direct `.mp4` files in filename order, one at a time:
+
+```bash
+cd /home/chris/projects/cs-ai-lab-infra
+python3 scripts/t480_adapter.py submit-transcription-folder \
+  --source-folder 'C:\Users\chris\Videos\To Transcribe' --approve
+```
+
+It uses the adapter's existing SSH host-key and key-authentication configuration. Each file is copied to the fixed private T480 inbox, run through this repository's one-shot Compose worker, and removed from the T480 inbox only after a successful job. Original videos stay in the Windows source folder; transcript outputs remain on the T480 under `outputs/<job_id>/`. It never starts a permanent worker and does not upload media to a cloud service.
+
+The command refuses subfolders and filenames outside a conservative portable character set (`A–Z`, `a–z`, `0–9`, spaces, `.`, `_`, `-`). Rename unusual filenames first. Run its preflight before the first batch:
+
+```bash
+python3 scripts/t480_adapter.py execute --operation transcription_deploy --approve
+python3 scripts/t480_adapter.py execute --operation transcription_preflight
+```
+
 See [T480 assessment](docs/t480-assessment.md), [operations](docs/operations.md), and [output format](docs/output-format.md).
 
 ## Testing

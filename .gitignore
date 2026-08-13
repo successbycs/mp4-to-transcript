@@ -10,6 +10,7 @@ build/
 
 # Private input media, model data, and generated review material
 inputs/
+incoming/
 outputs/
 model-cache/
 *.mp4
