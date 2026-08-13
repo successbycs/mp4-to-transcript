@@ -82,7 +82,7 @@ python3 scripts/t480_adapter.py execute --operation transcription_model_prefetch
 python3 scripts/t480_adapter.py execute --operation transcription_preflight
 ```
 
-See the complete [Windows-folder T480 runbook](docs/windows-folder-t480-runbook.md), [T480 assessment](docs/t480-assessment.md), [operations](docs/operations.md), and [output format](docs/output-format.md).
+See the [architecture](docs/architecture/README.md), complete [Windows-folder T480 runbook](docs/windows-folder-t480-runbook.md), [T480 assessment](docs/t480-assessment.md), [operations](docs/operations.md), and [output format](docs/output-format.md).
 
 ## Testing
 
