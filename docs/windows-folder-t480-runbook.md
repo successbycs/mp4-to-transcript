@@ -56,7 +56,7 @@ cd /home/chris/projects/cs-ai-lab-infra
 python3 scripts/t480_adapter.py pull-transcription-outputs --approve
 ```
 
-It copies only completed `REVIEW_REQUIRED` job folders to `C:\Users\chris\Videos\Transcripts`. An active or failed job is not exported. Do not use an ad-hoc remote shell command for retrieval.
+It copies only completed `REVIEW_REQUIRED` job folders to `C:\Users\chris\Videos\Transcripts`. Each folder uses the original MP4 filename without its extension, for example `Put Options (1_9) with John Thompson - Seminar/`; `job.json` inside retains the immutable `job_id` for auditability. An active or failed job is not exported. Older opaque job-ID folders are migrated to the source-name folder only when their `job.json` confirms they are the same job. Do not use an ad-hoc remote shell command for retrieval.
 
 ## Failure recovery
 
