@@ -17,6 +17,10 @@ services:
       WHISPER_LANGUAGE: ${WHISPER_LANGUAGE:-}
       TRANSCRIBE_CPU_THREADS: ${TRANSCRIBE_CPU_THREADS:-4}
       WHISPER_LOCAL_FILES_ONLY: ${WHISPER_LOCAL_FILES_ONLY:-true}
+      # Hugging Face/Xet metadata must share the writable persistent model cache;
+      # the container root filesystem remains read-only.
+      HF_HOME: /data/model-cache/huggingface
+      XDG_CACHE_HOME: /data/model-cache/cache
     volumes:
       - ${TRANSCRIPT_INPUT_DIR:-./inputs}:/input:ro
       - ${TRANSCRIPT_OUTPUT_DIR:-./outputs}:/data/outputs
