@@ -1,5 +1,7 @@
 # mp4-to-transcript
 
+![Private local MP4 transcription: a laptop video flows through a local processor into reviewable timestamped transcripts.](assets/private-local-transcription-hero.png)
+
 `mp4-to-transcript` is a deliberately small, private preparation tool: it turns **one local MP4** into timestamped transcript files that a human must review before the material enters any knowledge base.
 
 It is not a knowledge base, chat app, RAG system, video library, translation service, diarisation system, or cloud transcription client.
